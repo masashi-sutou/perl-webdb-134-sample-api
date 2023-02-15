@@ -1,0 +1,37 @@
+services:
+  api:
+    container_name: mojolicious
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - PERL5LIB=/opt/mods/local/lib/perl5:/opt/app/t/lib
+    command: 'morbo -l http://*:5000 -w lib -w etc etc/app.pl'
+    ports:
+      - 5000:5000
+    volumes:
+      - ./lib:/opt/app/lib
+      - ./etc:/opt/app/etc
+      - ./t:/opt/app/t
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    container_name: mysql
+    image: mysql:8.0-oracle
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -uroot -ppassword
+
+volumes:
+  db_data:

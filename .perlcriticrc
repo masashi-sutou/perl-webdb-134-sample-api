@@ -1,0 +1,27 @@
+# https://metacpan.org/pod/Perl::Critic::PolicySummary
+# https://blog.utgw.net/entry/2020/12/04/perlcritic
+severity = 3
+program-extensions = .pl .psgi .t .pm
+
+[Subroutines::ProhibitManyArgs]
+max_arguments = 8
+
+[RegularExpressions::ProhibitComplexRegexes]
+max_characters = 70
+
+[Subroutines::RequireFinalReturn]
+terminal_funcs = try
+
+[Modules::ProhibitExcessMainComplexity]
+max_mccabe = 30
+
+[-Subroutines::ProhibitExplicitReturnUndef]
+[-ValuesAndExpressions::ProhibitConstantPragma]
+[-RegularExpressions::RequireExtendedFormatting]
+[-Subroutines::ProhibitSubroutinePrototypes]
+[-Subroutines::ProhibitBuiltinHomonyms]
+[-NamingConventions::ProhibitAmbiguousNames]
+[-ValuesAndExpressions::ProhibitVersionStrings]
+
+[Perlsecret]
+allow_secrets = Bang Bang
